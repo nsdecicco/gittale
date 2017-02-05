@@ -40,7 +40,9 @@ function DefaultFightHandler(playerDamageReceived, playerHP,
 {
     if (playerHP <= 0) {
         return "playerDies";
-    }
+    } else if (enemyHP) {
+		return "enemyDies";
+	}
 }
 
 function DefaultMenuHandler()
@@ -59,63 +61,82 @@ function DefaultStartHandler()
 
 */
 
-var states = [
-    {
-        "name":"begin",
+var states = {
+    "start": {
         "type":"start",
         "handler":function() {
             
         }
     },
-    {
-        "text":"Hi there! I'm the Octocat. I am a hyper-dimensional being that exists only in the cloud."
-
-        "text":"Today I'm going to show you how to use Git, a collaborative tool for managing code repositories."
-        
-        "First things first, if you want to "
-        
-        "Now, try cloning the repository."
-        
-        "Wasn't that easy?"
-        
-        [
-        "Git allows you to create as many branches as you like!"
-        30,
-        "Isn't that cool??"
-        ]
-        
-        "OK, now let's try something a little harder. We're going to try to merge two branches."
-    }
-    {
-        "name":"",
+    "intro10": {
+		"type":"dialog",
+        "text":"Hi there! I'm the Octocat. I am a hyper-dimensional being " +
+		       "that exists only in the cloud."
+	},
+	"intro20": {
+		"type":"dialog",
+		"text":""
+	},
+	"intro30": {
+		"type":"dialog",
+        "text":"Today I'm going to show you how to use Git, a collaborative " +
+		       "tool for managing code repositories."
+	},
+	"intro40": {
+		"type":"dialog",
+        "text":"First things first, if you want to ",
+	},
+	"intro50": {
+		"type":"dialog",
+        "text":"Now, try cloning the repository."
+	},
+	"intro60": {
+		"type":"dialog",
+        "text":"Wasn't that easy?"
+	},
+	"intro70": {
+		"type":"dialog",
+		"text":"Git allows you to create as many branches as you like!"
+	},
+	"intro71": {
+		"type":"dialog",
+		"text":"Isn't that cool??"
+	},
+	"intro80": {
+		"type":"dialog",
+        "text":"OK, now let's try something a little harder. We're going to " +
+		       "try to merge two branches."
+	},
+	"intro90": {
+		"type":"dialog",
+		"text":"Type 'git merge foobar' to merge the other branch."
+    },
+    "intro100": {
         "type":"fight",
         "handler":function() {
             
         }
     },
-    {
-        "name":"",
+    "intro110": {
         "type":"",
         "handler":function() {
         }
     },
-    {
-        "name":"victory",
+    "victory": {
         "type":"end",
         "handler":function() {
             
         }
     },
-    {
-        "name":"defeat",
+    "defeat": {
         "type":"end",
         "handler":function() {
             
         }
-    }
-];
+    },
+	"intro140": {
+		"name":"",
+		"":"",
+	}
+};
 
-function AdvanceState()
-{
-    
-}
