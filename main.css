@@ -44,10 +44,22 @@ body {
 	height: 200px;
 }
 
-#speechBubble {
+.speechBubble {
 	white-space: nowrap;
-	background-color: #ffffff;
 	position: absolute;
 	left: 400px;
 	top: 100px;
+	border-collapse: collapse;
+	border-style: none;
+	color: #000;
 }
+
+.speechBubble-top-left     { width: 20px; background: url("assets/speechBubble-top-left.png"); }
+.speechBubble-top          { height: 20px; background: url("assets/speechBubble-top.png") repeat-x; }
+.speechBubble-top-right    { width: 20px; background: url("assets/speechBubble-top-right.png"); }
+.speechBubble-middle-left  { width: 20px; background: url("assets/speechBubble-middle-left.png") repeat-y; }
+.speechBubble-middle       { background: #fff; }
+.speechBubble-middle-right { width: 20px; background: url("assets/speechBubble-middle-right.png") repeat-y; }
+.speechBubble-bottom-left  { width: 20px; background: url("assets/speechBubble-bottom-left.png"); }
+.speechBubble-bottom       { height: 20px; background: url("assets/speechBubble-bottom.png") repeat-x; }
+.speechBubble-bottom-right { width: 20px; background: url("assets/speechBubble-bottom-right.png"); }
