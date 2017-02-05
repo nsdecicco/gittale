@@ -64,18 +64,14 @@ function DefaultStartHandler()
 var states = {
     "start": {
         "type":"start",
-        "handler":function() {
-            
-        }
+		"nextStates":{"default":"intro10"}
     },
     "intro10": {
 		"type":"dialog",
         "text":"Hi there! I'm the Octocat. I am a hyper-dimensional being " +
-		       "that exists only in the cloud."
-	},
-	"intro20": {
-		"type":"dialog",
-		"text":""
+		       "that exists only in the cloud. I will be your guide today " +
+		       "through cyber-revision-control space.",
+		"nextStates":{"complete":"intro30"}
 	},
 	"intro30": {
 		"type":"dialog",

@@ -34,6 +34,8 @@ function MsgBox() {
 
 	var uiArea = document.getElementById("uiArea");
 
+	var menu = document.getElementById("menu-inner");
+
 	var toolbar = document.createElement("div");
 	uiArea.appendChild(toolbar);
 
@@ -130,6 +132,10 @@ function MsgBox() {
 		}
     };
 
+	this.showDialog = function(text) {
+		menu.innerText = text;
+	};
+
 	gc.registerListeners(this);
 }
 
@@ -208,6 +214,8 @@ function ActionArea() {
 }
 
 function GameController() {
+	var that = this;
+
     /*
      * UI elements
      */
@@ -271,6 +279,7 @@ function GameController() {
 			case "dialog":
 		        switch (event) {
 					case "complete":
+						that.advanceState(event);
 						break;
 					default:
 						console.log("unexpected menu event '" + event + "' for " +
@@ -285,9 +294,24 @@ function GameController() {
     };
 
     /* Moves to the next state */
-    this.advanceState = function(action) {
+    this.advanceState = function(event) {
+		if (!curState.nextStates[event]) {
+			console.log("GameController.advanceState(): Could " +
+			            "not find next state for '" + event +
+			            "'");
+			return false;
+		}
+
+		if (!states[curState.nextStates[event]]) {
+			console.log("GameController.advanceState(): Could not find " +
+			            "next state '" + curState.nextStates[event] + "'");
+			return false;
+		}
+
+		curState = states[curState.nextStates[event]];
+
         /* Look up what the current state is */
-        switch (type) {
+        switch (curState.type) {
             case "react":
                 // Show a speech bubble
                 actionArea.showSpeechBubble("test of speech bubble");
@@ -307,6 +331,7 @@ function GameController() {
                 break;
             case "dialog":
                 // Enemy is talking, but in the main dialog window
+                msgBox.showDialog(curState.text);
                 break;
         }
     };
@@ -333,6 +358,8 @@ function GameController() {
 		actionArea.showSpeechBubble("foobar");
 
 		enemy = new Enemy("res/oc-");
+
+		that.advanceState("default");
 	};
 }
 

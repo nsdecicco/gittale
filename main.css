@@ -23,7 +23,7 @@ body {
 	width: 800px;
 }
 
-.menu {
+#menu {
 	background-color: #000;
 	border-width: 10px;
 	border-style: double;
@@ -37,7 +37,7 @@ body {
 	font-size: 24pt;
 }
 
-.menu-padding {
+#menu-inner {
 	padding: 30px;
 }
 
