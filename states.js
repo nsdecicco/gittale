@@ -156,7 +156,7 @@ var states = {
 		"music":null,
 		"expression":"neutral",
 		"actions": [
-			{"label": "git merge great-features-wow", "nextState": "intro90"},
+			{"label": "git merge great-features-wow", "nextState": "intro92"},
 		],
 	},
 	"intro92": {

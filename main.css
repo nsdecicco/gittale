@@ -99,8 +99,16 @@ body {
 	padding: 2px;
 }
 
-#menu-inner li.mi_high {
+#menu-inner li {
+	list-style-type: none;
+}
+
+#menu-inner li.mi_high/*:before*/ {
+/*
 	color: #ffde00;
+	content: '*';
+*/
+	list-style-image: url('assets/asterisk.png');
 }
 
 #toolBar li.mi_high {

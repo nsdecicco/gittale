@@ -79,8 +79,8 @@ function MsgBox() {
 		}
 	}
 
-	var act_actions = null;
-	var actItem = 0;
+	var fight_actions = null, act_actions = null, item_actions = null;
+	var fightItem = 0, actItem = 0, itemItem = 0;
 
     this.onkeydown=function(e) {
 		console.log("MsgBox.onkeydown " + e);
@@ -153,16 +153,29 @@ function MsgBox() {
 				hilightCurToolbarButton();
 
 			} else if (curMenu == "fight"){
-				curMenu = "toplevel"; //todo undo hackfix
-				if(e.key == "Enter"){
-					//dummy text for now
-					$("#menu-inner").text("Yeah battle yeah!!");
-					curMenu = "toplevel"; //this is where things broke:
-												//was attempting to exit menu after
-												//this selection but that wasn't
-												//working right
+				var select = false;
+				if (e.key == "ArrowDown") {
+					select = true;
+					fightItem = (fightItem + 1)%fight_actions.length;
+	            } else if (e.key == "ArrowUp") {
+					select = true;
+	                if (fightItem === 0){
+	                    fightItem = fight_actions.length-1;
+	                } else {
+	                    fightItem--;
+	                }
+				} else if (e.key == "Enter") {
+					gc.menuEvent(gc.getCurState().actions[fightItem]);
+				} else if (e.key == "Escape") {
+					curMenu = "toplevel";
 				}
-				//do later
+				var listItems = menu.getElementsByTagName("li");
+				for (i = 0; i < listItems.length; i++) {
+					listItems[i].classList.remove("mi_high");
+				}
+				if (select && fightItem < listItems.length) {
+					listItems[fightItem].classList.add("mi_high");
+				}
 			} else if (curMenu == "act") {
 				var select = false;
 				if (e.key == "ArrowDown") {
@@ -181,25 +194,35 @@ function MsgBox() {
 					curMenu = "toplevel";
 				}
 				var listItems = menu.getElementsByTagName("li");
-				for (i = 0; i < act_actions.length; i++) {
+				for (i = 0; i < listItems.length; i++) {
 					listItems[i].classList.remove("mi_high");
 				}
-				if (select) {
+				if (select && actItem < listItems.length) {
 					listItems[actItem].classList.add("mi_high");
 				}
 			} else if (curMenu == "use") {
-				var gitButton = 0; //0: gitpush 1: gitpull 2: gitmerge 3:stack overflow
-				if (e.key == "ArrowRight") {
-	               gitButton = (gitButton + 1)%4;
-	            } else if (e.key == "ArrowLeft") {
-	                if (gitButton === 0) {
-	                    gitButton = 3;
+				var select = false;
+				if (e.key == "ArrowDown") {
+					select = true;
+					itemItem = (itemItem + 1)%item_actions.length;
+	            } else if (e.key == "ArrowUp") {
+					select = true;
+	                if (itemItem === 0){
+	                    itemItem = item_actions.length-1;
 	                } else {
-	                    gitButton--;
+	                    itemItem--;
 	                }
 				} else if (e.key == "Enter") {
+					gc.menuEvent(gc.getCurState().actions[itemItem]);
 				} else if (e.key == "Escape") {
 					curMenu = "toplevel";
+				}
+				var listItems = menu.getElementsByTagName("li");
+				for (i = 0; i < listItems.length; i++) {
+					listItems[i].classList.remove("mi_high");
+				}
+				if (select && itemItem < listItems.length) {
+					listItems[itemItem].classList.add("mi_high");
 				}
 			} else if (curMenu == "mercy") {
 				var mercyButton = 0; //0: spare 1: flee
