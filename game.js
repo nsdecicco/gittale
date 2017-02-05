@@ -141,8 +141,6 @@ function MsgBox() {
 				curMenu = "toplevel";
 			}
 		}
-
-		// TODO: hilight current selection
     };
 }
 
