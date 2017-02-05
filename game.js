@@ -29,7 +29,6 @@ function Enemy(_baseImageURL) {
 }
 
 function MsgBox() {
-	
 	//get menu items
 	this.fightItem = $("#mi_fight");
 	this.actItem = $("#mi_act");
@@ -38,110 +37,141 @@ function MsgBox() {
 	that = this;
 
     var curMenu = "toplevel"; //0:"topLevelMenu", 1:"fight", 2:"act", 3:"use", 4:"mercy"
+
+	var curMode = "dialog"; // "dialog", "menu"
+
+	var uiArea = document.getElementById("uiArea");
+
+	var menu = document.getElementById("menu-inner");
+
+	var toolbar = document.createElement("div");
+	uiArea.appendChild(toolbar);
+
+	var cmd_fight = document.createElement("div");
+	cmd_fight.setAttribute("class", "button-inactive");
+	toolbar.appendChild(cmd_fight);
+
+	this.setMode = function(mode) {
+		curMode = mode;
+	};
+
     this.onkeydown=function(e) {
-        if (curMenu == "toplevel") {
-            var curButton = 0;
-			if (e.key == "ArrowRight") {
-               curButton = (curButton + 1)%4;
-            } else if (e.key == "ArrowLeft") {
-                if(curButton === 0){
-                    curButton = 3;
-                } else {
-                    curButton--;
-                }
-            } else if (e.key == "Enter") {
+		if (curMode == "menu") {
+	        if (curMenu == "toplevel") {
+	            var curButton = 0;
+				if (e.key == "ArrowRight") {
+	               curButton = (curButton + 1)%4;
+	            } else if (e.key == "ArrowLeft") {
+	                if(curButton === 0){
+	                    curButton = 3;
+	                } else {
+	                    curButton--;
+	                }
+	            } else if (e.key == "Enter") {
+					if(curButton === 0){
+						curMenu = "battle";
+					}
+					if(curButton == 1){
+						curMenu == "act";
+					}
+					if(curButton == 2){
+						curMenu == "git";
+					}
+					if(curButton == 3){
+						curMenu == "mercy";
+					}
+				}
+				
 				switch(curButton){
 					case 0:
-						curMenu = "battle";
+						that.fightItem.addClass("mi_high");
+						that.actItem.addClass("mi_unhigh");
+						that.useItem.addClass("mi_unhigh");
+						that.mercyItem.addClass("mi_unhigh");
 						break;
 					case 1:
-						curMenu = "act"
+						that.fightItem.addClass("mi_unhigh");
+						that.actItem.addClass("mi_high");
+						that.useItem.addClass("mi_unhigh");
+						that.mercyItem.addClass("mi_unhigh");
 						break;
 					case 2:
-						curMenu = "use"
+						that.fightItem.addClass("mi_unhigh");
+						that.actItem.addClass("mi_unhigh");
+						that.useItem.addClass("mi_high");
+						that.mercyItem.addClass("mi_unhigh");
 						break;
 					case 3:
-						curMenu = "mercy"
+						that.fightItem.addClass("mi_unhigh");
+						that.actItem.addClass("mi_unhigh");
+						that.useItem.addClass("mi_unhigh");
+						that.mercyItem.addClass("mi_high");
 						break;
 				}
-			}
-			
-			switch(curButton){
-				case 0:
-					that.fightItem.addClass("mi_high");
-					that.actItem.addClass("mi_unhigh");
-					that.useItem.addClass("mi_unhigh");
-					that.mercyItem.addClass("mi_unhigh");
-					break;
-				case 1:
-					that.fightItem.addClass("mi_unhigh");
-					that.actItem.addClass("mi_high");
-					that.useItem.addClass("mi_unhigh");
-					that.mercyItem.addClass("mi_unhigh");
-					break;
-				case 2:
-					that.fightItem.addClass("mi_unhigh");
-					that.actItem.addClass("mi_unhigh");
-					that.useItem.addClass("mi_high");
-					that.mercyItem.addClass("mi_unhigh");
-					break;
-				case 3:
-					that.fightItem.addClass("mi_unhigh");
-					that.actItem.addClass("mi_unhigh");
-					that.useItem.addClass("mi_unhigh");
-					that.mercyItem.addClass("mi_high");
-					break;
-			}
-			
-		} else if (curMenu == "battle"){
-			//do later
-		} else if (curMenu == "act") {
-			var actButton = 0; //0: Talk 1: Compliment 2: Check
-			if (e.key == "ArrowRight") {
-               actButton = (actButton + 1)%4;
-            } else if (e.key == "ArrowLeft") {
-                if (actButton === 0){
-                    actButton = 2;
-                } else {
-                    actButton--;
-                }
-			} else if (e.key == "Enter") {
+				
+			} else if (curMenu == "battle"){
 				//do later
-			} else if (e.key == "Escape") {
-				curMenu = "toplevel";
+			} else if (curMenu == "act") {
+				var actButton = 0; //0: Talk 1: Compliment 2: Check
+				if (e.key == "ArrowRight") {
+	               actButton = (actButton + 1)%4;
+	            } else if (e.key == "ArrowLeft") {
+	                if (actButton === 0){
+	                    actButton = 2;
+	                } else {
+	                    actButton--;
+	                }
+				} else if (e.key == "Enter") {
+					//do later
+				} else if (e.key == "Escape") {
+					curMenu = "toplevel";
+				}
+			} else if (curMenu == "git") {
+				var gitButton = 0; //0: gitpush 1: gitpull 2: gitmerge 3:stack overflow
+				if (e.key == "ArrowRight") {
+	               gitButton = (gitButton + 1)%4;
+	            } else if (e.key == "ArrowLeft") {
+	                if (gitButton === 0) {
+	                    gitButton = 3;
+	                } else {
+	                    gitButton--;
+	                }
+				} else if (e.key == "Enter") {
+					//do later
+				} else if (e.key == "Escape") {
+					curMenu = "toplevel";
+				}
+			} else if (curMenu == "mercy") {
+				var mercyButton = 0; //0: spare 1: flee
+				if (e.key == "ArrowRight") {
+	               mercyButton = (mercyButton + 1)%4;
+	            } else if (e.key == "ArrowLeft") {
+	                if (mercyButton === 0){
+	                    mercyButton = 1;
+	                } else {
+	                    mercyButton--;
+	                }
+				} else if(e.key == "Enter") {
+					//do later
+				} else if(e.key == "Escape") {
+					curMenu = "toplevel";
+				}
 			}
-		} else if (curMenu == "git") {
-			var gitButton = 0; //0: gitpush 1: gitpull 2: gitmerge 3:stack overflow
-			if (e.key == "ArrowRight") {
-               gitButton = (gitButton + 1)%4;
-            } else if (e.key == "ArrowLeft") {
-                if (gitButton === 0) {
-                    gitButton = 3;
-                } else {
-                    gitButton--;
-                }
-			} else if (e.key == "Enter") {
-				//do later
-			} else if (e.key == "Escape") {
-				curMenu = "toplevel";
-			}
-		} else if (curMenu == "mercy") {
-			var mercyButton = 0; //0: spare 1: flee
-			if (e.key == "ArrowRight") {
-               mercyButton = (mercyButton + 1)%4;
-            } else if (e.key == "ArrowLeft") {
-                if (mercyButton === 0){
-                    mercyButton = 1;
-                } else {
-                    mercyButton--;
-                }
-			} else if(e.key == "Enter") {
-				//do later
-			} else if(e.key == "Escape") {
-				curMenu = "toplevel";
+	
+			// TODO: hilight current selection
+		} else if (curMode == "dialog") {
+			if (e.key == "Enter") {
+				// TODO: check: are we animating text appear?
+				gc.menuEvent("complete");
 			}
 		}
     };
+
+	this.showDialog = function(text) {
+		menu.innerText = text;
+	};
+
+	gc.registerListeners(this);
 }
 
 function ActionArea() {
@@ -219,6 +249,8 @@ function ActionArea() {
 }
 
 function GameController() {
+	var that = this;
+
     /*
      * UI elements
      */
@@ -232,21 +264,44 @@ function GameController() {
     var curState;
 	var enemy;
 
+	/*
+	 * Audio
+	 */
+	var sound = null;
+
     curState = states["start"];
     
     var keydownTarget = null;
     var keyupTarget = null;
     var keypressTarget = null;
+
+	window.onkeydown = function(e) {
+		if (keydownTarget) {
+			keydownTarget(e);
+		}
+	};
+
+	window.onkeyup = function(e) {
+		if (keyupTarget) {
+			keyupTarget(e);
+		}
+	};
+
+	window.onkeypress = function(e) {
+		if (keypressTarget) {
+			keypressTarget(e);
+		}
+	};
     
     this.registerListeners = function(target) {
-        if (target.keydown) {
-            keydownTarget = target.keydown;
+        if (target.onkeydown) {
+            keydownTarget = target.onkeydown;
         }
-        if (target.keyup) {
-            keyupTarget = target.keyup;
+        if (target.onkeyup) {
+            keyupTarget = target.onkeyup;
         }
-        if (target.keypress) {
-            keypressTarget = target.keypress;
+        if (target.onkeypress) {
+            keypressTarget = target.onkeypress;
         }
     };
     
@@ -260,7 +315,18 @@ function GameController() {
         /* Look at current state and decide which state to proceed
          * to based on the event.
          */
-        
+		switch (curState.type) {
+			case "dialog":
+		        switch (event) {
+					case "complete":
+						that.advanceState(event);
+						break;
+					default:
+						console.log("unexpected menu event '" + event + "' for " +
+						            "game state '" + curState.type + "'");
+				}
+				break;
+		}
     };
     
     this.bulletHellEvent = function() {
@@ -268,9 +334,35 @@ function GameController() {
     };
 
     /* Moves to the next state */
-    this.advanceState = function(action) {
+    this.advanceState = function(event) {
+		if (!curState.nextStates[event]) {
+			console.log("GameController.advanceState(): Could " +
+			            "not find next state for '" + event +
+			            "'");
+			return false;
+		}
+
+		if (!states[curState.nextStates[event]]) {
+			console.log("GameController.advanceState(): Could not find " +
+			            "next state '" + curState.nextStates[event] + "'");
+			return false;
+		}
+
+		var oldState = curState;
+		curState = states[curState.nextStates[event]];
+
+		if (oldState.music != curState.music) {
+			if (curState.music == null && sound) {
+				sound.pause();
+			} else {
+				sound = new Audio("assets/" + curState.music);
+				sound.loop = true;
+				sound.play();
+			}
+		}
+
         /* Look up what the current state is */
-        switch (type) {
+        switch (curState.type) {
             case "react":
                 // Show a speech bubble
                 actionArea.showSpeechBubble("test of speech bubble");
@@ -290,6 +382,7 @@ function GameController() {
                 break;
             case "dialog":
                 // Enemy is talking, but in the main dialog window
+                msgBox.showDialog(curState.text);
                 break;
         }
     };
@@ -316,6 +409,8 @@ function GameController() {
 		actionArea.showSpeechBubble("foobar");
 
 		enemy = new Enemy("res/oc-");
+
+		that.advanceState("default");
 	};
 }
 
