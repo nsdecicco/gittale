@@ -57,6 +57,28 @@ function MsgBox() {
 
 	var curButton = 0; /* Current toolbar button */
 
+	function hilightCurToolbarButton() {
+		that.fightItem.removeClass("mi_high");
+		that.actItem.removeClass("mi_high");
+		that.useItem.removeClass("mi_high");
+		that.mercyItem.removeClass("mi_high");
+		
+		switch(curButton){
+			case 0:
+				that.fightItem.addClass("mi_high");
+				break;
+			case 1:
+				that.actItem.addClass("mi_high");
+				break;
+			case 2:
+				that.useItem.addClass("mi_high");
+				break;
+			case 3:
+				that.mercyItem.addClass("mi_high");
+				break;
+		}
+	}
+
     this.onkeydown=function(e) {
 		if (curMode == "menu") {
 	        if (curMenu == "toplevel") {
@@ -77,26 +99,8 @@ function MsgBox() {
 					}
 				}
 
-				that.fightItem.removeClass("mi_high");
-				that.actItem.removeClass("mi_high");
-				that.useItem.removeClass("mi_high");
-				that.mercyItem.removeClass("mi_high");
-				
-				switch(curButton){
-					case 0:
-						that.fightItem.addClass("mi_high");
-						break;
-					case 1:
-						that.actItem.addClass("mi_high");
-						break;
-					case 2:
-						that.useItem.addClass("mi_high");
-						break;
-					case 3:
-						that.mercyItem.addClass("mi_high");
-						break;
-				}
-				
+				hilightCurToolbarButton();
+
 			} else if (curMenu == "battle"){
 				curMenu = "toplevel"; //todo undo hackfix
 				if(e.key == "Enter"){
@@ -126,7 +130,7 @@ function MsgBox() {
 				} else if (e.key == "Escape") {
 					curMenu = "toplevel";
 				}
-			} else if (curMenu == "git") {
+			} else if (curMenu == "use") {
 				var gitButton = 0; //0: gitpush 1: gitpull 2: gitmerge 3:stack overflow
 				if (e.key == "ArrowRight") {
 	               gitButton = (gitButton + 1)%4;
@@ -180,6 +184,8 @@ function MsgBox() {
 	this.setIdle = function() {
 		// TODO: clear text, generate menus?
 		curMode = "menu";
+		curMenu = "toplevel";
+		hilightCurToolbarButton();
 	};
 
 	gc.registerListeners(this);
@@ -420,7 +426,7 @@ function GameController() {
 		// Need to answer the question(s): what are the view states?
 
 		// Test: show speech bubble
-		actionArea.showSpeechBubble("foobar");
+		//actionArea.showSpeechBubble("foobar");
 
 		enemy = new Enemy("res/oc-");
 
