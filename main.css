@@ -13,7 +13,7 @@ body {
 }
 
 #mainWin {
-	background-color: #aeaeae;
+	background-color: #000;
 }
 
 #uiArea, #actionArea, #mainWin {
@@ -24,19 +24,21 @@ body {
 }
 
 .menu {
-	background-color: #ffffff;
+	background-color: #000;
 	border-width: 10px;
 	border-style: double;
-	border-color: #000000;
+	border-color: #fff;
 	position: absolute;
 	top: 350px;
 	left: 30px;
 	width: 720px;
 	height: 200px;
+	color: #fff;
+	font-size: 24pt;
 }
 
 .menu-padding {
-	padding: 20px;
+	padding: 30px;
 }
 
 .enemy {
