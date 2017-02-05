@@ -75,3 +75,39 @@ body {
 .speechBubble-bottom-left  { width: 20px; background: url("assets/speechBubble-bottom-left.png"); }
 .speechBubble-bottom       { height: 20px; background: url("assets/speechBubble-bottom.png") repeat-x; }
 .speechBubble-bottom-right { width: 20px; background: url("assets/speechBubble-bottom-right.png"); }
+
+
+ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+li{
+	display: inline-block;
+	width: 100px;
+	height: 40px;
+	border-style: solid;
+	border-color: #ffffff;
+	text-align: center;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+.mi_unhigh{
+	border-style: solid;
+	border-width: 4px;
+}
+
+.mi_high{
+	border-style: double;
+	border-width: 6px;
+}
+
+#mainActArea{
+	width: 660px;
+	height: 100px;
+	border-style: double;
+	border-color: #ffffff;
+	margin-bottom: 10px;
+}
