@@ -94,16 +94,18 @@ li {
 	color: #fff;
 	font-size: 24pt;
 	font-weight: bold;
-}
 
-.mi_unhigh{
 	border-style: solid;
 	border-width: 4px;
+	padding: 2px;
 }
 
 .mi_high{
 	border-style: double;
 	border-width: 6px;
+	border-color: #ffde00;
+	color: #ffde00;
+	padding: 0px;
 }
 
 #toolBar {

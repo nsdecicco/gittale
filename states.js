@@ -123,8 +123,17 @@ var states = {
 		"type":"dialog",
 		"music":null,
 		"text":"Type 'git merge foobar' to merge the other branch.",
-		"nextStates":{"complete":"intro100"}
+		"nextStates":{"complete":"intro91"}
     },
+	"intro91": {
+		"type":"idle",
+		"music":null,
+		"actions": [
+			{"": ""},
+			{"": ""}
+		],
+		"nextStates": {"":""}
+	},
     "intro100": {
         "type":"fight",
         "nextStates":{"playerDies":"defeat"}

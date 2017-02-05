@@ -55,10 +55,11 @@ function MsgBox() {
 		curMode = mode;
 	};
 
+	var curButton = 0; /* Current toolbar button */
+
     this.onkeydown=function(e) {
 		if (curMode == "menu") {
 	        if (curMenu == "toplevel") {
-	            var curButton = 0;
 				if (e.key == "ArrowRight") {
 	               curButton = (curButton + 1)%4;
 	            } else if (e.key == "ArrowLeft") {
@@ -81,30 +82,23 @@ function MsgBox() {
 						curMenu == "mercy";
 					}
 				}
+
+				that.fightItem.removeClass("mi_high");
+				that.actItem.removeClass("mi_high");
+				that.useItem.removeClass("mi_high");
+				that.mercyItem.removeClass("mi_high");
 				
 				switch(curButton){
 					case 0:
 						that.fightItem.addClass("mi_high");
-						that.actItem.addClass("mi_unhigh");
-						that.useItem.addClass("mi_unhigh");
-						that.mercyItem.addClass("mi_unhigh");
 						break;
 					case 1:
-						that.fightItem.addClass("mi_unhigh");
 						that.actItem.addClass("mi_high");
-						that.useItem.addClass("mi_unhigh");
-						that.mercyItem.addClass("mi_unhigh");
 						break;
 					case 2:
-						that.fightItem.addClass("mi_unhigh");
-						that.actItem.addClass("mi_unhigh");
 						that.useItem.addClass("mi_high");
-						that.mercyItem.addClass("mi_unhigh");
 						break;
 					case 3:
-						that.fightItem.addClass("mi_unhigh");
-						that.actItem.addClass("mi_unhigh");
-						that.useItem.addClass("mi_unhigh");
 						that.mercyItem.addClass("mi_high");
 						break;
 				}
@@ -168,7 +162,13 @@ function MsgBox() {
     };
 
 	this.showDialog = function(text) {
+		curMode = "dialog";
 		menu.innerText = text;
+	};
+
+	this.setIdle = function() {
+		// TODO: clear text, generate menus?
+		curMode = "menu";
 	};
 
 	gc.registerListeners(this);
@@ -380,6 +380,9 @@ function GameController() {
             case "restart":
                 // Player died, start over
                 break;
+			case "idle":
+				msgBox.setIdle();
+				break;
             case "dialog":
                 // Enemy is talking, but in the main dialog window
                 msgBox.showDialog(curState.text);
