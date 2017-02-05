@@ -30,6 +30,8 @@ function Enemy(_baseImageURL) {
 
 function MsgBox() {
 
+	var curMode = "dialog"; // "dialog", "menu"
+
 	var uiArea = document.getElementById("uiArea");
 
 	var toolbar = document.createElement("div");
@@ -39,83 +41,96 @@ function MsgBox() {
 	cmd_fight.setAttribute("class", "button-inactive");
 	toolbar.appendChild(cmd_fight);
 
+	this.setMode = function(mode) {
+		curMode = mode;
+	};
+
     var curMenu = "toplevel"; //0:"topLevelMenu", 1:"fight", 2:"act", 3:"git", 4:"mercy"
     this.onkeydown=function(e) {
-        if (curMenu == "toplevel") {
-            var curButton = 0;
-			if (e.key == "ArrowRight") {
-               curButton = (curButton + 1)%4;
-            } else if (e.key == "ArrowLeft") {
-                if(curButton === 0){
-                    curButton = 3;
-                } else {
-                    curButton--;
-                }
-            } else if (e.key == "Enter") {
-				if(curButton === 0){
-					curMenu = "battle";
+		if (curMode == "menu") {
+	        if (curMenu == "toplevel") {
+	            var curButton = 0;
+				if (e.key == "ArrowRight") {
+	               curButton = (curButton + 1)%4;
+	            } else if (e.key == "ArrowLeft") {
+	                if(curButton === 0){
+	                    curButton = 3;
+	                } else {
+	                    curButton--;
+	                }
+	            } else if (e.key == "Enter") {
+					if(curButton === 0){
+						curMenu = "battle";
+					}
+					if(curButton == 1){
+						curMenu == "act";
+					}
+					if(curButton == 2){
+						curMenu == "git";
+					}
+					if(curButton == 3){
+						curMenu == "mercy";
+					}
 				}
-				if(curButton == 1){
-					curMenu == "act";
+			} else if (curMenu == "battle"){
+				//do later
+			} else if (curMenu == "act") {
+				var actButton = 0; //0: Talk 1: Compliment 2: Check
+				if (e.key == "ArrowRight") {
+	               actButton = (actButton + 1)%4;
+	            } else if (e.key == "ArrowLeft") {
+	                if (actButton === 0){
+	                    actButton = 2;
+	                } else {
+	                    actButton--;
+	                }
+				} else if (e.key == "Enter") {
+					//do later
+				} else if (e.key == "Escape") {
+					curMenu = "toplevel";
 				}
-				if(curButton == 2){
-					curMenu == "git";
+			} else if (curMenu == "git") {
+				var gitButton = 0; //0: gitpush 1: gitpull 2: gitmerge 3:stack overflow
+				if (e.key == "ArrowRight") {
+	               gitButton = (gitButton + 1)%4;
+	            } else if (e.key == "ArrowLeft") {
+	                if (gitButton === 0) {
+	                    gitButton = 3;
+	                } else {
+	                    gitButton--;
+	                }
+				} else if (e.key == "Enter") {
+					//do later
+				} else if (e.key == "Escape") {
+					curMenu = "toplevel";
 				}
-				if(curButton == 3){
-					curMenu == "mercy";
+			} else if (curMenu == "mercy") {
+				var mercyButton = 0; //0: spare 1: flee
+				if (e.key == "ArrowRight") {
+	               mercyButton = (mercyButton + 1)%4;
+	            } else if (e.key == "ArrowLeft") {
+	                if (mercyButton === 0){
+	                    mercyButton = 1;
+	                } else {
+	                    mercyButton--;
+	                }
+				} else if(e.key == "Enter") {
+					//do later
+				} else if(e.key == "Escape") {
+					curMenu = "toplevel";
 				}
 			}
-		} else if (curMenu == "battle"){
-			//do later
-		} else if (curMenu == "act") {
-			var actButton = 0; //0: Talk 1: Compliment 2: Check
-			if (e.key == "ArrowRight") {
-               actButton = (actButton + 1)%4;
-            } else if (e.key == "ArrowLeft") {
-                if (actButton === 0){
-                    actButton = 2;
-                } else {
-                    actButton--;
-                }
-			} else if (e.key == "Enter") {
-				//do later
-			} else if (e.key == "Escape") {
-				curMenu = "toplevel";
-			}
-		} else if (curMenu == "git") {
-			var gitButton = 0; //0: gitpush 1: gitpull 2: gitmerge 3:stack overflow
-			if (e.key == "ArrowRight") {
-               gitButton = (gitButton + 1)%4;
-            } else if (e.key == "ArrowLeft") {
-                if (gitButton === 0) {
-                    gitButton = 3;
-                } else {
-                    gitButton--;
-                }
-			} else if (e.key == "Enter") {
-				//do later
-			} else if (e.key == "Escape") {
-				curMenu = "toplevel";
-			}
-		} else if (curMenu == "mercy") {
-			var mercyButton = 0; //0: spare 1: flee
-			if (e.key == "ArrowRight") {
-               mercyButton = (mercyButton + 1)%4;
-            } else if (e.key == "ArrowLeft") {
-                if (mercyButton === 0){
-                    mercyButton = 1;
-                } else {
-                    mercyButton--;
-                }
-			} else if(e.key == "Enter") {
-				//do later
-			} else if(e.key == "Escape") {
-				curMenu = "toplevel";
+	
+			// TODO: hilight current selection
+		} else if (curMode == "dialog") {
+			if (e.key == "Enter") {
+				// TODO: check: are we animating text appear?
+				gc.menuEvent("complete");
 			}
 		}
-
-		// TODO: hilight current selection
     };
+
+	gc.registerListeners(this);
 }
 
 function ActionArea() {
@@ -211,16 +226,34 @@ function GameController() {
     var keydownTarget = null;
     var keyupTarget = null;
     var keypressTarget = null;
+
+	window.onkeydown = function(e) {
+		if (keydownTarget) {
+			keydownTarget(e);
+		}
+	};
+
+	window.onkeyup = function(e) {
+		if (keyupTarget) {
+			keyupTarget(e);
+		}
+	};
+
+	window.onkeypress = function(e) {
+		if (keypressTarget) {
+			keypressTarget(e);
+		}
+	};
     
     this.registerListeners = function(target) {
-        if (target.keydown) {
-            keydownTarget = target.keydown;
+        if (target.onkeydown) {
+            keydownTarget = target.onkeydown;
         }
-        if (target.keyup) {
-            keyupTarget = target.keyup;
+        if (target.onkeyup) {
+            keyupTarget = target.onkeyup;
         }
-        if (target.keypress) {
-            keypressTarget = target.keypress;
+        if (target.onkeypress) {
+            keypressTarget = target.onkeypress;
         }
     };
     
@@ -234,7 +267,17 @@ function GameController() {
         /* Look at current state and decide which state to proceed
          * to based on the event.
          */
-        
+		switch (curState.type) {
+			case "dialog":
+		        switch (event) {
+					case "complete":
+						break;
+					default:
+						console.log("unexpected menu event '" + event + "' for " +
+						            "game state '" + curState.type + "'");
+				}
+				break;
+		}
     };
     
     this.bulletHellEvent = function() {
