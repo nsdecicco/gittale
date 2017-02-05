@@ -1,4 +1,12 @@
+@font-face {
+	font-family: "Determination";
+	src: url("fonts/determinationmonoweb-webfont.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
 body {
+	font-family: "Determination";
 	background: black;
 	padding: 0px;
 	margin: 0px;
