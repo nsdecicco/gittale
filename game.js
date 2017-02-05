@@ -79,7 +79,11 @@ function MsgBox() {
 		}
 	}
 
+	var act_actions = null;
+	var actItem = 0;
+
     this.onkeydown=function(e) {
+		console.log("MsgBox.onkeydown " + e);
 		if (curMode == "menu") {
 	        if (curMenu == "toplevel") {
 				if (e.key == "ArrowRight") {
@@ -92,43 +96,96 @@ function MsgBox() {
 	                }
 	            } else if (e.key == "Enter") {
 					switch (curButton) {
-						case 0: curMenu = "battle"; break;
-						case 1: curMenu = "act"; break;
-						case 2: curMenu = "git"; break;
+						case 0:
+							// clear menu
+							while (menu.firstChild) menu.removeChild(menu.firstChild);
+							curMenu = "fight";
+							var i;
+							fight_actions = gc.getCurState().fight;
+							if (!fight_actions) break;
+							var list = document.createElement("ul");
+							for (i = 0; i < fight_actions.length; i++) {
+								var item = document.createElement("li");
+								item.innerText = fight_actions[i].label;
+								if (i == 0) item.setAttribute("class", "mi_high");
+								list.appendChild(item);
+							}
+							fightItem = 0;
+							menu.appendChild(list);
+							break;
+						case 1:
+							// clear menu
+							while (menu.firstChild) menu.removeChild(menu.firstChild);
+							curMenu = "act";
+							var i;
+							act_actions = gc.getCurState().actions;
+							if (!act_actions) break;
+							var list = document.createElement("ul");
+							for (i = 0; i < act_actions.length; i++) {
+								var item = document.createElement("li");
+								item.innerText = act_actions[i].label;
+								if (i == 0) item.setAttribute("class", "mi_high");
+								list.appendChild(item);
+							}
+							actItem = 0;
+							menu.appendChild(list);
+							break;
+						case 2:
+							// clear menu
+							while (menu.firstChild) menu.removeChild(menu.firstChild);
+							curMenu = "use";
+							var i;
+							item_actions = gc.getCurState().items;
+							if (!item_actions) break;
+							var list = document.createElement("ul");
+							for (i = 0; i < item_actions.length; i++) {
+								var item = document.createElement("li");
+								item.innerText = item_actions[i].label;
+								if (i == 0) item.setAttribute("class", "mi_high");
+								list.appendChild(item);
+							}
+							fightItem = 0;
+							menu.appendChild(list);
 						case 3: curMenu = "mercy"; break;
 					}
 				}
 
 				hilightCurToolbarButton();
 
-			} else if (curMenu == "battle"){
+			} else if (curMenu == "fight"){
 				curMenu = "toplevel"; //todo undo hackfix
 				if(e.key == "Enter"){
 					//dummy text for now
 					$("#menu-inner").text("Yeah battle yeah!!");
-					that.curMenu = "toplevel"; //this is where things broke:
+					curMenu = "toplevel"; //this is where things broke:
 												//was attempting to exit menu after
 												//this selection but that wasn't
 												//working right
 				}
 				//do later
 			} else if (curMenu == "act") {
-				var actButton = 0; //0: Talk 1: Compliment 2: Check
-				if (e.key == "ArrowRight") {
-	               actButton = (actButton + 1)%4;
-	            } else if (e.key == "ArrowLeft") {
-	                if (actButton === 0){
-	                    actButton = 2;
+				var select = false;
+				if (e.key == "ArrowDown") {
+					select = true;
+					actItem = (actItem + 1)%act_actions.length;
+	            } else if (e.key == "ArrowUp") {
+					select = true;
+	                if (actItem === 0){
+	                    actItem = act_actions.length-1;
 	                } else {
-	                    actButton--;
+	                    actItem--;
 	                }
 				} else if (e.key == "Enter") {
-					//do later
-					//dummy text for now
-					$("#menu-inner").text("Yeah acting good yeah!!");
-					that.curMenu = "toplevel";
+					gc.menuEvent("action");
 				} else if (e.key == "Escape") {
 					curMenu = "toplevel";
+				}
+				var listItems = menu.getElementsByTagName("li");
+				for (i = 0; i < act_actions.length; i++) {
+					listItems[i].classList.remove("mi_high");
+				}
+				if (select) {
+					listItems[actItem].classList.add("mi_high");
 				}
 			} else if (curMenu == "use") {
 				var gitButton = 0; //0: gitpush 1: gitpull 2: gitmerge 3:stack overflow
@@ -144,7 +201,7 @@ function MsgBox() {
 					//do later
 					//dummy text for now
 					$("#menu-inner").text("Yeah I love BING yeah!!");
-					that.curMenu = "toplevel";
+					curMenu = "toplevel";
 				} else if (e.key == "Escape") {
 					curMenu = "toplevel";
 				}
@@ -162,7 +219,7 @@ function MsgBox() {
 					//do later
 					//dummy text for now
 					$("#menu-inner").text("Yeah so much mercy yeah!!");
-					that.curMenu = "toplevel";
+					curMenu = "toplevel";
 				} else if(e.key == "Escape") {
 					curMenu = "toplevel";
 				}
@@ -291,6 +348,10 @@ function GameController() {
     var keydownTarget = null;
     var keyupTarget = null;
     var keypressTarget = null;
+
+	this.getCurState = function() {
+		return curState;
+	};
 
 	window.onkeydown = function(e) {
 		if (keydownTarget) {

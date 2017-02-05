@@ -76,23 +76,22 @@ body {
 .speechBubble-bottom       { height: 20px; background: url("assets/speechBubble-bottom.png") repeat-x; }
 .speechBubble-bottom-right { width: 20px; background: url("assets/speechBubble-bottom-right.png"); }
 
-
-ul{
+#toolBar {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
 
-li {
+#toolBar li {
 	display: inline-block;
 	width: 130px;
-	height: 40px;
+	height: 35px;
 	border-style: solid;
 	border-color: #ffffff;
 	text-align: center;
 	margin-left: 30px;
 	color: #fff;
-	font-size: 24pt;
+	font-size: 22pt;
 	font-weight: bold;
 
 	border-style: solid;
@@ -100,7 +99,11 @@ li {
 	padding: 2px;
 }
 
-.mi_high{
+#menu-inner li.mi_high {
+	color: #ffde00;
+}
+
+#toolBar li.mi_high {
 	border-style: double;
 	border-width: 6px;
 	border-color: #ffde00;
@@ -108,8 +111,40 @@ li {
 	padding: 0px;
 }
 
+
 #toolBar {
 	position: absolute;
-	top: 520px;
+	top: 535px;
 	left: 30px;
+}
+
+#statusBar-left, #statusBar-right {
+	white-space: nowrap;
+	position: absolute;
+	width: 600px;
+	top: 510px;
+	color: #fff;
+}
+
+#statusBar-left {
+	left: 30px;
+	width: 600px;
+}
+
+#statusBar-left div {
+	display: inline-block;
+}
+
+#hp_damage, #hp_remain {
+	height: 10px;
+}
+
+#hp_damage {
+	background: #f00;
+	width: 0px;
+}
+
+#hp_remain {
+	background: #ffde00;
+	width: 20px;
 }

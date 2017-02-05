@@ -2,9 +2,10 @@
 //
 // State machine states
 // 
+// - "idle"
 // - "menu"
 // - "react"
-// - "playerDialog"
+// - "dialog"
 //   
 // - "fight"
 //   
@@ -13,10 +14,14 @@
 // - name
 // - type
 // - handler
+//
+// mus_f_newlaugh
+// mus_intronoise - for credits
+// mus_menu0
 
 /*
 
-nsd@nsd-PC MINGW64 ~/tmp
+nsd@host$
 $ git init .
 Initialized empty Git repository in C:/Users/nsd/tmp/.git/
 
@@ -85,14 +90,24 @@ var states = {
 	"intro40": {
 		"type":"dialog",
 		"music":"mus_flowey.ogg",
-        "text":"First things first, if you want to ",
+        "text":"First things first, if you want to check out a repository, " +
+		       "you just need to run `git clone`.",
+		"nextStates":{"complete":"intro41"}
+	},
+	"intro41": {
+		"type":"dialog",
+		"music":"mus_flowey.ogg",
+        "text":"Why don't you try it?",
 		"nextStates":{"complete":"intro50"}
 	},
 	"intro50": {
-		"type":"dialog",
+		"type":"idle",
 		"music":"mus_flowey.ogg",
-        "text":"Now, try cloning the repository.",
-		"nextStates":{"complete":"intro60"}
+		"fight": [],
+		"actions": [
+			{"label": "git clone https://github.com/nsdecicco/gittale.git", "nextState": "intro60"},
+		],
+		"items": [] // Nothing for this state.
 	},
 	"intro60": {
 		"type":"dialog",
@@ -129,19 +144,48 @@ var states = {
 		"type":"idle",
 		"music":null,
 		"actions": [
-			{"": ""},
-			{"": ""}
+			{"label": "git merge ", "":""},
+			{"label": "git pull ", "":""},
 		],
 		"nextStates": {"":""}
 	},
+	"intro90": {
+		"type":"dialog",
+		"music":null,
+		"text":"Type 'git merge foobar' to merge the other branch.",
+		"nextStates":{"complete":"intro91"}
+    },
     "intro100": {
         "type":"fight",
+		"music":"mus_bad.ogg",
         "nextStates":{"playerDies":"defeat"}
     },
     "intro110": {
-        "type":"",
-        "handler":function() {
-        }
+        "type":"idle",
+		"music":"mus_boss1.ogg", /* asriel fight? */
+		"fight":[
+		],
+		"actions": [
+			{"label": "git merge"}
+		],
+		"items": [
+			{
+				"label": "google",
+				"action": function() {
+					return { "effect": null,
+					         "text": "Your keystrokes echoed far and wide, " +
+					                 "but nobody answered."
+					};
+				}
+			}, {
+				"label": "bing",
+				"action": function() {
+					return Math.rand() > 0.5 ?
+						{ "effect": null,"text":"But it's not google?" } :
+						{ "effect": null,"text":"You tried, but it had no effect."};
+				}
+			}
+		]
     },
     "victory": {
         "type":"end",
@@ -151,6 +195,7 @@ var states = {
     },
     "defeat": {
         "type":"end",
+		"music":"mus_gameover.ogg",
         "handler":function() {
             
         }
