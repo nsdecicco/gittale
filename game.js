@@ -168,7 +168,13 @@ function MsgBox() {
     };
 
 	this.showDialog = function(text) {
+		curMode = "dialog";
 		menu.innerText = text;
+	};
+
+	this.setIdle = function() {
+		// TODO: clear text, generate menus?
+		curMode = "menu";
 	};
 
 	gc.registerListeners(this);
@@ -380,6 +386,9 @@ function GameController() {
             case "restart":
                 // Player died, start over
                 break;
+			case "idle":
+				msgBox.setIdle();
+				break;
             case "dialog":
                 // Enemy is talking, but in the main dialog window
                 msgBox.showDialog(curState.text);
