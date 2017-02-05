@@ -7,18 +7,89 @@ window.onload = function() {
 
 function MsgBox() {
     //show menu
-    
-    var curButton = 0;
-    var curMenu = 0; //0:"topLevelMenu", 1:"fight", 2:"act", 3:"git", 4:"mercy"
+
+
+    var curMenu = "toplevel"; //0:"topLevelMenu", 1:"fight", 2:"act", 3:"git", 4:"mercy"
     this.onkeydown=function(e) {
+        if (curMenu == "toplevel") {
+            var curButton = 0;
+			if (e.key == "ArrowRight") {
+               curButton = (curButton + 1)%4;
+            } else if (e.key == "ArrowLeft") {
+                if(curButton === 0){
+                    curButton = 3;
+                } else {
+                    curButton--;
+                }
+            } else if (e.key == "Enter") {
+				if(curButton === 0){
+					curMenu = "battle";
+				}
+				if(curButton == 1){
+					curMenu == "act";
+				}
+				if(curButton == 2){
+					curMenu == "git";
+				}
+				if(curButton == 3){
+					curMenu == "mercy";
+				}
+			}
+		} else if (curMenu == "battle"){
+			//do later
+		} else if (curMenu == "act") {
+			var actButton = 0; //0: Talk 1: Compliment 2: Check
+			if (e.key == "ArrowRight") {
+               actButton = (actButton + 1)%4;
+            } else if (e.key == "ArrowLeft") {
+                if (actButton === 0){
+                    actButton = 2;
+                } else {
+                    actButton--;
+                }
+			} else if (e.key == "Enter") {
+				//do later
+			} else if (e.key == "Escape") {
+				curMenu = "toplevel";
+			}
+		} else if (curMenu == "git") {
+			var gitButton = 0; //0: gitpush 1: gitpull 2: gitmerge 3:stack overflow
+			if (e.key == "ArrowRight") {
+               gitButton = (gitButton + 1)%4;
+            } else if (e.key == "ArrowLeft") {
+                if (gitButton === 0) {
+                    gitButton = 3;
+                } else {
+                    gitButton--;
+                }
+			} else if (e.key == "Enter") {
+				//do later
+			} else if (e.key == "Escape") {
+				curMenu = "toplevel";
+			}
+		} else if (curMenu == "mercy") {
+			var mercyButton = 0; //0: spare 1: flee
+			if (e.key == "ArrowRight") {
+               mercyButton = (mercyButton + 1)%4;
+            } else if (e.key == "ArrowLeft") {
+                if (mercyButton === 0){
+                    mercyButton = 1;
+                } else {
+                    mercyButton--;
+                }
+			} else if(e.key == "Enter") {
+				//do later
+			} else if(e.key == "Escape") {
+				curMenu = "toplevel";
+			}
+		}
+
+		// TODO: hilight current selection
     };
-    
+
     //show diag
-    
-    // throwing an error for some reason
-    //menuObj = $("#menu");
-    
-    
+
+    menuObj = $("#menu");
 }
 
 function ActionArea() {
