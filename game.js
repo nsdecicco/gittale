@@ -36,7 +36,7 @@ function MsgBox() {
 	this.mercyItem = $("#mi_mercy");
 	that = this;
 
-    var curMenu = "toplevel"; //0:"topLevelMenu", 1:"fight", 2:"act", 3:"use", 4:"mercy"
+    this.curMenu = "toplevel"; //0:"topLevelMenu", 1:"fight", 2:"act", 3:"use", 4:"mercy"
 
 	var curMode = "dialog"; // "dialog", "menu"
 
@@ -59,7 +59,7 @@ function MsgBox() {
 
     this.onkeydown=function(e) {
 		if (curMode == "menu") {
-	        if (curMenu == "toplevel") {
+	        if (that.curMenu == "toplevel") {
 				if (e.key == "ArrowRight") {
 	               curButton = (curButton + 1)%4;
 	            } else if (e.key == "ArrowLeft") {
@@ -69,17 +69,18 @@ function MsgBox() {
 	                    curButton--;
 	                }
 	            } else if (e.key == "Enter") {
+					//todo, make this neater
 					if(curButton === 0){
-						curMenu = "battle";
+						that.curMenu = "battle";
 					}
 					if(curButton == 1){
-						curMenu == "act";
+						that.curMenu == "act";
 					}
 					if(curButton == 2){
-						curMenu == "git";
+						that.curMenu == "use";
 					}
 					if(curButton == 3){
-						curMenu == "mercy";
+						that.curMenu == "mercy";
 					}
 				}
 
@@ -103,10 +104,19 @@ function MsgBox() {
 						break;
 				}
 				
-			} else if (curMenu == "battle"){
+			} else if (that.curMenu == "battle"){
+				curMenu = "toplevel"; //todo undo hackfix
+				if(e.key == "Enter"){
+					//dummy text for now
+					$("#menu-inner").text("Yeah battle yeah!!");
+					that.curMenu = "toplevel"; //this is where things broke:
+												//was attempting to exit menu after
+												//this selection but that wasn't
+												//working right
+				}
 				//do later
-			} else if (curMenu == "act") {
-				var actButton = 0; //0: Talk 1: Compliment 2: Check
+			} else if (that.curMenu == "act") {
+				var actButton = 0; //0: gitpush 1: gitpull 2: gitmerge 3:gitcheckout 4:stack overflow
 				if (e.key == "ArrowRight") {
 	               actButton = (actButton + 1)%4;
 	            } else if (e.key == "ArrowLeft") {
@@ -117,11 +127,16 @@ function MsgBox() {
 	                }
 				} else if (e.key == "Enter") {
 					//do later
+					
+					//dummy text for now
+					$("#menu-inner").text("Yeah acting good yeah!!");
+					that.curMenu = "toplevel";
+					
 				} else if (e.key == "Escape") {
-					curMenu = "toplevel";
+					that.curMenu = "toplevel";
 				}
-			} else if (curMenu == "git") {
-				var gitButton = 0; //0: gitpush 1: gitpull 2: gitmerge 3:stack overflow
+			} else if (that.curMenu == "use") {
+				var gitButton = 0; 
 				if (e.key == "ArrowRight") {
 	               gitButton = (gitButton + 1)%4;
 	            } else if (e.key == "ArrowLeft") {
@@ -132,10 +147,15 @@ function MsgBox() {
 	                }
 				} else if (e.key == "Enter") {
 					//do later
+					
+					//dummy text for now
+					$("#menu-inner").text("Yeah I love BING yeah!!");
+					that.curMenu = "toplevel";
+					
 				} else if (e.key == "Escape") {
-					curMenu = "toplevel";
+					that.curMenu = "toplevel";
 				}
-			} else if (curMenu == "mercy") {
+			} else if (that.curMenu == "mercy") {
 				var mercyButton = 0; //0: spare 1: flee
 				if (e.key == "ArrowRight") {
 	               mercyButton = (mercyButton + 1)%4;
@@ -147,12 +167,17 @@ function MsgBox() {
 	                }
 				} else if(e.key == "Enter") {
 					//do later
+					
+					
+					//dummy text for now
+					$("#menu-inner").text("Yeah so much mercy yeah!!");
+					that.curMenu = "toplevel";
+					
 				} else if(e.key == "Escape") {
-					curMenu = "toplevel";
+					that.curMenu = "toplevel";
 				}
 			}
-	
-			// TODO: hilight current selection
+			
 		} else if (curMode == "dialog") {
 			if (e.key == "Enter") {
 				// TODO: check: are we animating text appear?
@@ -162,13 +187,13 @@ function MsgBox() {
     };
 
 	this.showDialog = function(text) {
-		curMode = "dialog";
+		that.curMode = "dialog";
 		menu.innerText = text;
 	};
 
 	this.setIdle = function() {
 		// TODO: clear text, generate menus?
-		curMode = "menu";
+		that.curMode = "menu";
 	};
 
 	gc.registerListeners(this);
@@ -317,6 +342,16 @@ function GameController() {
          */
 		switch (curState.type) {
 			case "dialog":
+		        switch (event) {
+					case "complete":
+						that.advanceState(event);
+						break;
+					default:
+						console.log("unexpected menu event '" + event + "' for " +
+						            "game state '" + curState.type + "'");
+				}
+				break;
+			case "idle": //This might be totally wrong, can likely completely remove this
 		        switch (event) {
 					case "complete":
 						that.advanceState(event);
