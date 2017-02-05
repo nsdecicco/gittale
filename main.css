@@ -23,11 +23,10 @@ body {
 	border-style: double;
 	border-color: #000000;
 	position: relative;
-	top: 500px;
-	left: 250px;
-	width: 200px;
-	
-	
+	top: 350px;
+	left: 30px;
+	width: 720px;
+	height: 200px;
 }
 
 #ocHolder{
