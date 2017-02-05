@@ -198,8 +198,6 @@ function MsgBox() {
 	                    gitButton--;
 	                }
 				} else if (e.key == "Enter") {
-					$("#menu-inner").text("Yeah I love BING yeah!!");
-					curMenu = "toplevel";
 				} else if (e.key == "Escape") {
 					curMenu = "toplevel";
 				}
@@ -402,7 +400,7 @@ function GameController() {
 							            "'");
 							return false;
 						}
-						that.advanceState(event);
+						that.advanceState(curState.nextStates[event]);
 						break;
 					default:
 						console.log("unexpected menu event '" + event + "' for " +
@@ -440,6 +438,10 @@ function GameController() {
 				sound.loop = true;
 				sound.play();
 			}
+		}
+
+		if (curState.expression) {
+			enemy.setExpression(curState.expression);
 		}
 
         /* Look up what the current state is */
