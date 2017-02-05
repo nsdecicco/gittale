@@ -29,6 +29,14 @@ function Enemy(_baseImageURL) {
 }
 
 function MsgBox() {
+	//get menu items
+	this.fightItem = $("#mi_fight");
+	this.actItem = $("#mi_act");
+	this.useItem = $("#mi_use");
+	this.mercyItem = $("#mi_mercy");
+	that = this;
+
+    var curMenu = "toplevel"; //0:"topLevelMenu", 1:"fight", 2:"act", 3:"use", 4:"mercy"
 
 	var curMode = "dialog"; // "dialog", "menu"
 
@@ -47,7 +55,6 @@ function MsgBox() {
 		curMode = mode;
 	};
 
-    var curMenu = "toplevel"; //0:"topLevelMenu", 1:"fight", 2:"act", 3:"git", 4:"mercy"
     this.onkeydown=function(e) {
 		if (curMode == "menu") {
 	        if (curMenu == "toplevel") {
@@ -74,6 +81,34 @@ function MsgBox() {
 						curMenu == "mercy";
 					}
 				}
+				
+				switch(curButton){
+					case 0:
+						that.fightItem.addClass("mi_high");
+						that.actItem.addClass("mi_unhigh");
+						that.useItem.addClass("mi_unhigh");
+						that.mercyItem.addClass("mi_unhigh");
+						break;
+					case 1:
+						that.fightItem.addClass("mi_unhigh");
+						that.actItem.addClass("mi_high");
+						that.useItem.addClass("mi_unhigh");
+						that.mercyItem.addClass("mi_unhigh");
+						break;
+					case 2:
+						that.fightItem.addClass("mi_unhigh");
+						that.actItem.addClass("mi_unhigh");
+						that.useItem.addClass("mi_high");
+						that.mercyItem.addClass("mi_unhigh");
+						break;
+					case 3:
+						that.fightItem.addClass("mi_unhigh");
+						that.actItem.addClass("mi_unhigh");
+						that.useItem.addClass("mi_unhigh");
+						that.mercyItem.addClass("mi_high");
+						break;
+				}
+				
 			} else if (curMenu == "battle"){
 				//do later
 			} else if (curMenu == "act") {
