@@ -29,17 +29,15 @@ function Enemy(_baseImageURL) {
 }
 
 function MsgBox() {
+	
+	//get menu items
+	this.fightItem = $("#mi_fight");
+	this.actItem = $("#mi_act");
+	this.useItem = $("#mi_use");
+	this.mercyItem = $("#mi_mercy");
+	that = this;
 
-	var uiArea = document.getElementById("uiArea");
-
-	var toolbar = document.createElement("div");
-	uiArea.appendChild(toolbar);
-
-	var cmd_fight = document.createElement("div");
-	cmd_fight.setAttribute("class", "button-inactive");
-	toolbar.appendChild(cmd_fight);
-
-    var curMenu = "toplevel"; //0:"topLevelMenu", 1:"fight", 2:"act", 3:"git", 4:"mercy"
+    var curMenu = "toplevel"; //0:"topLevelMenu", 1:"fight", 2:"act", 3:"use", 4:"mercy"
     this.onkeydown=function(e) {
         if (curMenu == "toplevel") {
             var curButton = 0;
@@ -52,19 +50,49 @@ function MsgBox() {
                     curButton--;
                 }
             } else if (e.key == "Enter") {
-				if(curButton === 0){
-					curMenu = "battle";
-				}
-				if(curButton == 1){
-					curMenu == "act";
-				}
-				if(curButton == 2){
-					curMenu == "git";
-				}
-				if(curButton == 3){
-					curMenu == "mercy";
+				switch(curButton){
+					case 0:
+						curMenu = "battle";
+						break;
+					case 1:
+						curMenu = "act"
+						break;
+					case 2:
+						curMenu = "use"
+						break;
+					case 3:
+						curMenu = "mercy"
+						break;
 				}
 			}
+			
+			switch(curButton){
+				case 0:
+					that.fightItem.addClass("mi_high");
+					that.actItem.addClass("mi_unhigh");
+					that.useItem.addClass("mi_unhigh");
+					that.mercyItem.addClass("mi_unhigh");
+					break;
+				case 1:
+					that.fightItem.addClass("mi_unhigh");
+					that.actItem.addClass("mi_high");
+					that.useItem.addClass("mi_unhigh");
+					that.mercyItem.addClass("mi_unhigh");
+					break;
+				case 2:
+					that.fightItem.addClass("mi_unhigh");
+					that.actItem.addClass("mi_unhigh");
+					that.useItem.addClass("mi_high");
+					that.mercyItem.addClass("mi_unhigh");
+					break;
+				case 3:
+					that.fightItem.addClass("mi_unhigh");
+					that.actItem.addClass("mi_unhigh");
+					that.useItem.addClass("mi_unhigh");
+					that.mercyItem.addClass("mi_high");
+					break;
+			}
+			
 		} else if (curMenu == "battle"){
 			//do later
 		} else if (curMenu == "act") {
