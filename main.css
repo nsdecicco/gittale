@@ -1,50 +1,53 @@
 body {
 	background: black;
+	padding: 0px;
+	margin: 0px;
 }
 
-#mainWin{
+#mainWin {
 	background-color: #aeaeae;
-	width: 800px;
-	height: 600px;
-	margin: 0px auto;
 }
 
-#uiArea{
-	position: relative;
-	top: -600px;
+#uiArea, #actionArea, #mainWin {
+	position: absolute;
+	top: 0px;
 	height: 600px;
 	width: 800px;
-	
 }
 
-.menu{
+.menu {
 	background-color: #ffffff;
 	border-width: 10px;
 	border-style: double;
 	border-color: #000000;
-	position: relative;
+	position: absolute;
 	top: 350px;
 	left: 30px;
 	width: 720px;
 	height: 200px;
 }
 
-#ocHolder{
-	width: 200px;
-	height: 500px;
-	background-color: #804050;
-	position: relative;
-	/*top: -525px;*/
-	left: 200px;
+.menu-padding {
+	padding: 20px;
 }
 
-#speech{	
-	width: 400px;
+#octocatContainer {
+	width: 50px;
 	height: 100px;
-	background-color: #ffffff;
-	position: relative;
-	/*top: -825px;*/
-	top: -350px;
-	left: 400px;
+	background-color: #804050;
+	position: absolute;
+	left: 200px;
+	top: 0px;
 }
 
+.octocat {
+	height: 200px;
+}
+
+#speechBubble {
+	white-space: nowrap;
+	background-color: #ffffff;
+	position: absolute;
+	left: 400px;
+	top: 100px;
+}
