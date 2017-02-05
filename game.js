@@ -29,8 +29,15 @@ function Enemy(_baseImageURL) {
 }
 
 function MsgBox() {
-    //show menu
 
+	var uiArea = document.getElementById("uiArea");
+
+	var toolbar = document.createElement("div");
+	uiArea.appendChild(toolbar);
+
+	var cmd_fight = document.createElement("div");
+	cmd_fight.setAttribute("class", "button-inactive");
+	toolbar.appendChild(cmd_fight);
 
     var curMenu = "toplevel"; //0:"topLevelMenu", 1:"fight", 2:"act", 3:"git", 4:"mercy"
     this.onkeydown=function(e) {
@@ -109,10 +116,6 @@ function MsgBox() {
 
 		// TODO: hilight current selection
     };
-
-    //show diag
-
-    menuObj = $("#menu");
 }
 
 function ActionArea() {
@@ -193,8 +196,8 @@ function GameController() {
     /*
      * UI elements
      */
-    var msgBox = new MsgBox();
-    var actionArea = new ActionArea();
+    var msgBox;
+    var actionArea;
     
     /*
      * Game state
@@ -273,6 +276,9 @@ function GameController() {
 	 * global var isn't initialized by the time it's needed
 	 */
 	this.init = function() {
+		msgBox = new MsgBox();
+		actionArea = new ActionArea();
+
 	    /* Initialize GameController */
 	    // 1. Initialize game state
 	    curState = states["start"];
