@@ -3,7 +3,30 @@ var gc; /* GameController instance */
 
 window.onload = function() {
     gc = new GameController();
+	gc.init();
 };
+
+function Enemy(_baseImageURL) {
+	var baseImageURL = _baseImageURL;
+
+	var image = document.createElement("div");
+	image.setAttribute("class", "enemy");
+	//if (gc) {
+		gc.addToActionArea(image);
+	//}
+
+	/* angry
+	 * evil
+	 * insane
+	 * neutral
+	 * sad
+	 */
+	this.setExpression = function(expression) {
+		image.style.backgroundImage = "url('" + baseImageURL + expression + ".png')";
+	};
+
+	this.setExpression("neutral");
+}
 
 function MsgBox() {
     //show menu
@@ -146,6 +169,10 @@ function ActionArea() {
             row.appendChild(cell);
         speechBubble.appendChild(row);
 
+	this.add = function(e) {
+		actionArea.appendChild(e);
+	};
+
     this.showSpeechBubble = function(text) {
         speechBubble.style.visibility = "visible";
         contentArea.innerText = text; // TODO: animate text
@@ -174,6 +201,7 @@ function GameController() {
      */
     var animHappening;
     var curState;
+	var enemy;
 
     curState = states["start"];
     
@@ -237,15 +265,26 @@ function GameController() {
         }
     };
 
-    /* Initialize GameController */
-    // 1. Initialize game state
-    curState = states["start"];
-    
-    // 2. Initialize view
-    // Need to answer the question(s): what are the view states?
+	this.addToActionArea = function(e) {
+		actionArea.add(e);
+	};
 
-	// Test: show speech bubble
-	actionArea.showSpeechBubble("foobar");
+	/* This must be a separate function b/c otherwise the 'gc'
+	 * global var isn't initialized by the time it's needed
+	 */
+	this.init = function() {
+	    /* Initialize GameController */
+	    // 1. Initialize game state
+	    curState = states["start"];
+    
+		// 2. Initialize view
+		// Need to answer the question(s): what are the view states?
+
+		// Test: show speech bubble
+		actionArea.showSpeechBubble("foobar");
+
+		enemy = new Enemy("res/oc-");
+	};
 }
 
 
