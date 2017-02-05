@@ -176,7 +176,7 @@ function MsgBox() {
 	                    actItem--;
 	                }
 				} else if (e.key == "Enter") {
-					gc.menuEvent("action");
+					gc.menuEvent(gc.getCurState().actions[actItem]);
 				} else if (e.key == "Escape") {
 					curMenu = "toplevel";
 				}
@@ -198,8 +198,6 @@ function MsgBox() {
 	                    gitButton--;
 	                }
 				} else if (e.key == "Enter") {
-					//do later
-					//dummy text for now
 					$("#menu-inner").text("Yeah I love BING yeah!!");
 					curMenu = "toplevel";
 				} else if (e.key == "Escape") {
@@ -397,12 +395,23 @@ function GameController() {
 			case "dialog":
 		        switch (event) {
 					case "complete":
+						console.log("Continuing from dialog state");
+						if (!curState.nextStates[event]) {
+							console.log("GameController.menuEvent(): Could " +
+							            "not find next state for '" + event +
+							            "'");
+							return false;
+						}
 						that.advanceState(event);
 						break;
 					default:
 						console.log("unexpected menu event '" + event + "' for " +
 						            "game state '" + curState.type + "'");
 				}
+				break;
+			case "idle":
+				console.log("Processing menu event that occured in idle state");
+				that.advanceState(event.nextState);
 				break;
 		}
     };
@@ -412,22 +421,16 @@ function GameController() {
     };
 
     /* Moves to the next state */
-    this.advanceState = function(event) {
-		if (!curState.nextStates[event]) {
-			console.log("GameController.advanceState(): Could " +
-			            "not find next state for '" + event +
-			            "'");
-			return false;
-		}
+    this.advanceState = function(nextState) {
 
-		if (!states[curState.nextStates[event]]) {
+		if (!states[nextState]) {
 			console.log("GameController.advanceState(): Could not find " +
 			            "next state '" + curState.nextStates[event] + "'");
 			return false;
 		}
 
 		var oldState = curState;
-		curState = states[curState.nextStates[event]];
+		curState = states[nextState];
 
 		if (oldState.music != curState.music) {
 			if (curState.music == null && sound) {
@@ -442,6 +445,7 @@ function GameController() {
         /* Look up what the current state is */
         switch (curState.type) {
             case "react":
+				console.log("Advancing to react state");
                 // Show a speech bubble
                 actionArea.showSpeechBubble("test of speech bubble");
                 window.setTimeout(function() {
@@ -450,18 +454,23 @@ function GameController() {
                 });
                 break;
             case "menu":
+				console.log("Advancing to menu state");
                 // Present the user with several options
                 break;
             case "fight":
+				console.log("Advancing to fight state");
                 // Start fight sequence
                 break;
             case "restart":
+				console.log("Advancing to restart state");
                 // Player died, start over
                 break;
 			case "idle":
+				console.log("Advancing to idle state");
 				msgBox.setIdle();
 				break;
             case "dialog":
+				console.log("Advancing to dialog state");
                 // Enemy is talking, but in the main dialog window
                 msgBox.showDialog(curState.text);
                 break;
@@ -491,7 +500,7 @@ function GameController() {
 
 		enemy = new Enemy("res/oc-");
 
-		that.advanceState("default");
+		that.advanceState("intro10");
 	};
 }
 
