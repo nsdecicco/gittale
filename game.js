@@ -69,17 +69,11 @@ function MsgBox() {
 	                    curButton--;
 	                }
 	            } else if (e.key == "Enter") {
-					if(curButton === 0){
-						curMenu = "battle";
-					}
-					if(curButton == 1){
-						curMenu == "act";
-					}
-					if(curButton == 2){
-						curMenu == "git";
-					}
-					if(curButton == 3){
-						curMenu == "mercy";
+					switch (curButton) {
+						case 0: curMenu = "battle"; break;
+						case 1: curMenu = "act"; break;
+						case 2: curMenu = "git"; break;
+						case 3: curMenu = "mercy"; break;
 					}
 				}
 
@@ -104,6 +98,15 @@ function MsgBox() {
 				}
 				
 			} else if (curMenu == "battle"){
+				curMenu = "toplevel"; //todo undo hackfix
+				if(e.key == "Enter"){
+					//dummy text for now
+					$("#menu-inner").text("Yeah battle yeah!!");
+					that.curMenu = "toplevel"; //this is where things broke:
+												//was attempting to exit menu after
+												//this selection but that wasn't
+												//working right
+				}
 				//do later
 			} else if (curMenu == "act") {
 				var actButton = 0; //0: Talk 1: Compliment 2: Check
@@ -117,6 +120,9 @@ function MsgBox() {
 	                }
 				} else if (e.key == "Enter") {
 					//do later
+					//dummy text for now
+					$("#menu-inner").text("Yeah acting good yeah!!");
+					that.curMenu = "toplevel";
 				} else if (e.key == "Escape") {
 					curMenu = "toplevel";
 				}
@@ -132,6 +138,9 @@ function MsgBox() {
 	                }
 				} else if (e.key == "Enter") {
 					//do later
+					//dummy text for now
+					$("#menu-inner").text("Yeah I love BING yeah!!");
+					that.curMenu = "toplevel";
 				} else if (e.key == "Escape") {
 					curMenu = "toplevel";
 				}
@@ -147,12 +156,14 @@ function MsgBox() {
 	                }
 				} else if(e.key == "Enter") {
 					//do later
+					//dummy text for now
+					$("#menu-inner").text("Yeah so much mercy yeah!!");
+					that.curMenu = "toplevel";
 				} else if(e.key == "Escape") {
 					curMenu = "toplevel";
 				}
 			}
 	
-			// TODO: hilight current selection
 		} else if (curMode == "dialog") {
 			if (e.key == "Enter") {
 				// TODO: check: are we animating text appear?
