@@ -64,10 +64,12 @@ function DefaultStartHandler()
 var states = {
     "start": {
         "type":"start",
+		"music":null,
 		"nextStates":{"default":"intro10"}
     },
     "intro10": {
 		"type":"dialog",
+		"music":"mus_flowey.ogg",
         "text":"Hi there! I'm the Octocat. I am a hyper-dimensional being " +
 		       "that exists only in the cloud. I will be your guide today " +
 		       "through cyber-revision-control space.",
@@ -75,43 +77,57 @@ var states = {
 	},
 	"intro30": {
 		"type":"dialog",
+		"music":"mus_flowey.ogg",
         "text":"Today I'm going to show you how to use Git, a collaborative " +
-		       "tool for managing code repositories."
+		       "tool for managing code repositories.",
+		"nextStates":{"complete":"intro40"}
 	},
 	"intro40": {
 		"type":"dialog",
+		"music":"mus_flowey.ogg",
         "text":"First things first, if you want to ",
+		"nextStates":{"complete":"intro50"}
 	},
 	"intro50": {
 		"type":"dialog",
-        "text":"Now, try cloning the repository."
+		"music":"mus_flowey.ogg",
+        "text":"Now, try cloning the repository.",
+		"nextStates":{"complete":"intro60"}
 	},
 	"intro60": {
 		"type":"dialog",
-        "text":"Wasn't that easy?"
+		"music":"mus_flowey.ogg",
+        "text":"Wasn't that easy?",
+		"nextStates":{"complete":"intro70"}
 	},
 	"intro70": {
 		"type":"dialog",
-		"text":"Git allows you to create as many branches as you like!"
+		"music":"mus_flowey.ogg",
+		"text":"Git allows you to create as many branches as you like!",
+		"nextStates":{"complete":"intro71"}
 	},
 	"intro71": {
 		"type":"dialog",
-		"text":"Isn't that cool??"
+		"music":"mus_flowey.ogg",
+		"text":"Isn't that cool??",
+		"nextStates":{"complete":"intro80"}
 	},
 	"intro80": {
 		"type":"dialog",
+		"music":"mus_flowey.ogg",
         "text":"OK, now let's try something a little harder. We're going to " +
-		       "try to merge two branches."
+		       "try to merge two branches.",
+		"nextStates":{"complete":"intro90"}
 	},
 	"intro90": {
 		"type":"dialog",
-		"text":"Type 'git merge foobar' to merge the other branch."
+		"music":null,
+		"text":"Type 'git merge foobar' to merge the other branch.",
+		"nextStates":{"complete":"intro100"}
     },
     "intro100": {
         "type":"fight",
-        "handler":function() {
-            
-        }
+        "nextStates":{"playerDies":"defeat"}
     },
     "intro110": {
         "type":"",

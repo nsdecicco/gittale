@@ -229,6 +229,11 @@ function GameController() {
     var curState;
 	var enemy;
 
+	/*
+	 * Audio
+	 */
+	var sound = null;
+
     curState = states["start"];
     
     var keydownTarget = null;
@@ -308,7 +313,18 @@ function GameController() {
 			return false;
 		}
 
+		var oldState = curState;
 		curState = states[curState.nextStates[event]];
+
+		if (oldState.music != curState.music) {
+			if (curState.music == null && sound) {
+				sound.pause();
+			} else {
+				sound = new Audio("assets/" + curState.music);
+				sound.loop = true;
+				sound.play();
+			}
+		}
 
         /* Look up what the current state is */
         switch (curState.type) {
